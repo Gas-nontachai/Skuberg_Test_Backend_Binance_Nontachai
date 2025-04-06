@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         username: DataTypes.STRING,
         email: DataTypes.STRING,
         password: DataTypes.STRING,
-        balance: DataTypes.FLOAT
+        balance: {
+            type: DataTypes.FLOAT,
+            defaultValue: 0.0
+        },
     });
 
     User.associate = (models) => {

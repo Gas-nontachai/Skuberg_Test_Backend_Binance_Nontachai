@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/user.controller');
+const { UserController } = require('../controllers/');
+const authenticate = require('../middleware/auth.middleware');
 
-router.post('/register', userController.register);
-router.post('/login', userController.login);
+router.post('/getUserBy', authenticate, UserController.getUserBy);
+router.post('/getUserByID', authenticate, UserController.getUserByID);
+router.post('/updateUserBy', authenticate, UserController.updateUserBy);
+router.post('/CheckBalance', authenticate, UserController.CheckBalance);
 
 module.exports = router;

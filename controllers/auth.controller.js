@@ -1,9 +1,7 @@
-const db = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
-
-const User = db.User;
+const { User } = require('../models');
 
 exports.register = async (req, res) => {
     const { username, email, password } = req.body;
