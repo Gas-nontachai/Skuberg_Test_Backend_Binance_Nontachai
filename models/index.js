@@ -15,10 +15,21 @@ const sequelize = new Sequelize(
         logging: false,
     }
 );
+
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.User = require('./user.model')(sequelize, Sequelize);
+db.Cryptocurrency = require('./cryptocurrency.model')(sequelize, Sequelize);
+db.Transaction = require('./transaction.model')(sequelize, Sequelize);
+db.Wallet = require('./wallet.model')(sequelize, Sequelize);
+db.Payment = require('./payment.model')(sequelize, Sequelize);
+
+Object.keys(db).forEach(modelName => {
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
+    }
+});
 
 module.exports = db;
