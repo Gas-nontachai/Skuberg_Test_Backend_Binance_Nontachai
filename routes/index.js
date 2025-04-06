@@ -4,6 +4,9 @@ module.exports = (app) => {
   });
 
   app.use(`/auth`, require("./auth.route"));
-  app.use(`/user`, require("./user.route"));
   app.use(`/cryptocurrency`, require("./cryptocurrency.route"));
+  app.use(`/payment`, require("./payment.route"));
+  app.use(`/transaction`, require("./transaction.route"));
+  app.use(`/user`, require("./user.route"));
+  app.use(`/wallet`, require("./wallet.route"));
 }

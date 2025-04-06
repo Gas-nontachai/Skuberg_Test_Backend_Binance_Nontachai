@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { UserController } = require('../controllers/');
 const authenticate = require('../middleware/auth.middleware');
+const { UserController } = require('../controllers/');
 
 router.post('/getUserBy', authenticate, UserController.getUserBy);
 router.post('/getUserByID', authenticate, UserController.getUserByID);

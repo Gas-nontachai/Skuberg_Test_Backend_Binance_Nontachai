@@ -1,6 +1,6 @@
 const { Wallet } = require('../models');
 
-exports.addToWallet = async (req, res) => {
+exports.insertWallet = async (req, res) => {
     const { user_id, crypto_id, amount } = req.body;
 
     try {

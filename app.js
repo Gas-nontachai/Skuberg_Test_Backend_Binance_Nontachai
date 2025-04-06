@@ -3,12 +3,19 @@ const app = express();
 const db = require('./models');
 require('dotenv').config();
 const cors = require('cors');
-
 const { logger } = require("./middleware/logger.middleware.js");
+const session = require('express-session');
 
 app.use(cors());
 app.use(express.json());
 app.use(logger);
+
+app.use(session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 86400000 }
+}));
 
 const authMiddleware = require('./middleware/auth.middleware');
 app.get('/api/profile', authMiddleware, (req, res) => {
