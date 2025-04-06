@@ -1,0 +1,26 @@
+{
+  "name": "skuberg_test_backend_binance_nontachai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gas-nontachai/Skuberg_Test_Backend_Binance_Nontachai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gas-nontachai/Skuberg_Test_Backend_Binance_Nontachai/issues"
+  },
+  "homepage": "https://github.com/Gas-nontachai/Skuberg_Test_Backend_Binance_Nontachai#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.0",
+    "sequelize": "^6.37.7"
+  }
+}
