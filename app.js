@@ -18,11 +18,6 @@ app.use(session({
     cookie: { secure: false, maxAge: 86400000 }
 }));
 
-const authMiddleware = require('./middleware/auth.middleware');
-app.get('/api/profile', authMiddleware, (req, res) => {
-    res.json({ msg: 'Protected route', user: req.user });
-});
-
 db.sequelize.sync().then(() => {
     console.log('===== Database Connected! =====');
     app.listen(process.env.APP_PORT || 3000, () =>
