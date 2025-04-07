@@ -80,6 +80,35 @@ npm run dev
 
 ## 🔐 ระบบการยืนยันตัวตน (Authentication System)
 
+### Register
+
+- Endpoint: `POST /auth/register`
+
+**ข้อมูลสำหรับทดสอบ (Test credentials):**
+```json
+{
+  "username": "GGas",
+  "email": "GGAs@test.com",
+  "password": "admin1234"
+}
+```
+
+**ผลลัพธ์ (Response):**
+```json
+{
+    "message": "User created successfully",
+    "user": {
+        "user_id": "USR07042025-ae301",
+        "balance": 0,
+        "username": "GGas",
+        "email": "GGAs@test.com",
+        "password": "$2b$10$fwq8YXw0FRFNJakEqgBDqukHqQkmrG4xFuHgAdEoNsPU0beSFXFX2",
+        "updatedAt": "2025-04-07T10:10:33.639Z",
+        "createdAt": "2025-04-07T10:10:33.639Z"
+    }
+}
+``` 
+---
 ### Login
 
 - Endpoint: `POST /auth/login`
