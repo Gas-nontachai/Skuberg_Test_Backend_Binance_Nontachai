@@ -58,12 +58,17 @@ npm install
 
 3. **สร้างไฟล์ `.env` (Create a .env file):**
 ```
-PORT=5120
+APP_NAMESPACE = crypto_exchange_backend
+APP_PORT = 5120
+APP_VERSION = 1.0
+
+JWT_SECRET=your_jwt_secret
+
+DB_NAME=yourdbname
 DB_HOST=localhost
+DB_PORT=5120
 DB_USER=root
 DB_PASSWORD=yourpassword
-DB_NAME=yourdbname
-SECRET_KEY=your_jwt_secret
 ```
 
 4. **เริ่มต้นเซิร์ฟเวอร์ (Start the server):**
