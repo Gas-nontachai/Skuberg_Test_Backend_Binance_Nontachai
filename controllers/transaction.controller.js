@@ -59,3 +59,11 @@ exports.getTransactionHistory = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+exports.getTransactionBy = async (req, res) => {
+    try {
+        const transaction = await Transaction.findAll();
+        res.status(201).json(transaction);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

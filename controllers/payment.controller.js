@@ -64,7 +64,7 @@ exports.paymentOrder = async (req, res) => {
         const payment = await Payment.create({
             from_user_id,
             trade_id,
-            payment_status: "close"
+            payment_status: "complete"
         });
 
         trade.status = 'close';
@@ -76,3 +76,13 @@ exports.paymentOrder = async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 };
+
+exports.getPaymentBy = async (req, res) => {
+    try {
+        const payment = await Payment.findAll();
+        res.status(201).json(payment);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+

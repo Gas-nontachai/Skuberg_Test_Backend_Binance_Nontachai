@@ -5,6 +5,7 @@ require('dotenv').config();
 const cors = require('cors');
 const { logger } = require("./middleware/logger.middleware.js");
 const session = require('express-session');
+const { seedData } = require('./seed/seedData.js');
 
 app.use(cors());
 app.use(express.json());
@@ -22,11 +23,12 @@ app.get('/api/profile', authMiddleware, (req, res) => {
     res.json({ msg: 'Protected route', user: req.user });
 });
 
-db.sequelize.sync({ alter: true }).then(() => {
+db.sequelize.sync().then(() => {
     console.log('===== Database Connected! =====');
     app.listen(process.env.APP_PORT || 3000, () =>
         console.log(`===== Server running on port ${process.env.APP_PORT} =====`)
     );
+    seedData();
 });
 
 require('./routes')(app)

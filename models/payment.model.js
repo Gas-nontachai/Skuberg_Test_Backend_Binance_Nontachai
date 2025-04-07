@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         from_user_id: DataTypes.STRING,
         trade_id: DataTypes.STRING,
         payment_status: {
-            type: DataTypes.ENUM('open', 'close'),
+            type: DataTypes.ENUM('open', 'close', 'complete'),
             defaultValue: 'open',
         },
     });
