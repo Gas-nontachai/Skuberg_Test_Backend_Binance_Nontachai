@@ -6,20 +6,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             primaryKey: true,
             allowNull: false,
-            defaultValue: () => generateID("TRX")
+            defaultValue: () => generateID("TRN")
         },
         from_user_id: DataTypes.STRING,
         to_user_id: DataTypes.STRING,
-        crypto_id: DataTypes.STRING,
         amount: DataTypes.FLOAT,
-        price_at_trans: DataTypes.FLOAT,
-        transaction_type: DataTypes.STRING
+        transaction_type: DataTypes.STRING,
+        status: DataTypes.STRING,
     });
 
     Transaction.associate = (models) => {
         Transaction.belongsTo(models.User, { foreignKey: "from_user_id", as: "fromUser" });
         Transaction.belongsTo(models.User, { foreignKey: "to_user_id", as: "toUser" });
-        Transaction.belongsTo(models.Cryptocurrency, { foreignKey: "crypto_id" });
     };
 
     return Transaction;

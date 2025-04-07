@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         User.hasMany(models.Transaction, { foreignKey: "from_user_id", as: "sentTransactions" });
         User.hasMany(models.Transaction, { foreignKey: "to_user_id", as: "receivedTransactions" });
         User.hasMany(models.Payment, { foreignKey: "from_user_id", as: "sentPayments" });
-        User.hasMany(models.Payment, { foreignKey: "to_user_id", as: "receivedPayments" });
+        User.hasMany(models.Trade, { foreignKey: 'user_id' });
     };
 
     return User;

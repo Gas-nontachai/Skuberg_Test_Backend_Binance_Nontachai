@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Cryptocurrency.associate = (models) => {
-        Cryptocurrency.hasMany(models.Wallet, { foreignKey: "crypto_id" });
-        Cryptocurrency.hasMany(models.Transaction, { foreignKey: "crypto_id" });
+        Cryptocurrency.hasMany(models.Wallet, { foreignKey: "crypto_id" }); 
+        Cryptocurrency.hasMany(models.Trade, { foreignKey: 'crypto_id' });
     };
 
     return Cryptocurrency;

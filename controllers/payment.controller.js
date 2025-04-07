@@ -1,34 +1,78 @@
-const { Payment } = require('../models');
+const { Payment, Trade, User, Wallet } = require('../models');
 
-exports.insertPayment = async (req, res) => {
-    const { from_user_id, to_user_id, amount, payment_method } = req.body;
+const orderBuy = async (user, trade) => {
+    if (user.balance < trade.price) {
+        throw new Error('Insufficient balance');
+    }
 
-    try {
-        const payment = await Payment.create({
-            from_user_id,
-            to_user_id,
-            amount,
-            payment_method
+    user.balance -= trade.price;
+    await user.save();
+
+    let wallet = await Wallet.findOne({ where: { user_id: user.user_id, crypto_id: trade.crypto_id } });
+    if (wallet) {
+        wallet.amount += trade.amount;
+        await wallet.save();
+    } else {
+        await Wallet.create({
+            user_id: user.user_id,
+            crypto_id: trade.crypto_id,
+            amount: trade.amount
         });
-
-        res.status(201).json({ message: 'Payment created successfully', payment });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
     }
 };
 
-exports.getPaymentHistory = async (req, res) => {
-    const { user_id } = req.body;
+const orderSell = async (user, trade) => {
+    const wallet = await Wallet.findOne({ where: { user_id: user.user_id, crypto_id: trade.crypto_id } });
+
+    if (!wallet || wallet.amount < trade.amount) {
+        throw new Error('Insufficient crypto balance');
+    }
+
+    wallet.amount -= trade.amount;
+    await wallet.save();
+
+    user.balance += trade.price;
+    await user.save();
+};
+
+exports.paymentOrder = async (req, res) => {
+    const { from_user_id, trade_id } = req.body;
 
     try {
-        const payments = await Payment.findAll({
-            where: {
-                [Op.or]: [{ from_user_id: user_id }, { to_user_id: user_id }]
-            }
+        const user = await User.findOne({ where: { user_id: from_user_id } });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const trade = await Trade.findOne({ where: { trade_id } });
+        if (!trade) {
+            return res.status(404).json({ message: 'Trade not found' });
+        }
+
+        if (trade.status === 'close') {
+            return res.status(400).json({ message: 'This trade is already close' });
+        }
+
+        if (trade.order_type === 'buy') {
+            await orderBuy(user, trade);
+        } else if (trade.order_type === 'sell') {
+            await orderSell(user, trade);
+        } else {
+            return res.status(400).json({ message: 'Invalid order type' });
+        }
+
+        const payment = await Payment.create({
+            from_user_id,
+            trade_id,
+            payment_status: "close"
         });
 
-        res.status(200).json(payments);
+        trade.status = 'close';
+        await trade.save();
+
+        res.status(201).json({ message: 'Payment successfully', payment });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(400).json({ error: err.message });
     }
 };

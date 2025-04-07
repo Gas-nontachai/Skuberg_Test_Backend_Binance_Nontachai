@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Transaction } = require('../models');
 
 exports.getUserBy = async (req, res) => {
     try {
@@ -41,6 +41,71 @@ exports.updateUserBy = async (req, res) => {
         });
 
         res.status(200).json(updatedUser);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+exports.deposit = async (req, res) => {
+    try {
+        const { user_id, balance } = req.body;
+
+        if (balance <= 0) {
+            return res.status(400).json({ message: 'Deposit balance must be greater than zero' });
+        }
+
+        const user = await User.findByPk(user_id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.balance += balance;
+        await user.save();
+
+        const transaction = await Transaction.create({
+            from_user_id: null,
+            to_user_id: user_id,
+            amount: balance,
+            transaction_type: 'deposit',
+            status: 'completed'
+        });
+
+        res.status(200).json({ message: `Deposit of ${balance} successful`, balance: user.balance, transaction });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.withdraw = async (req, res) => {
+    try {
+        const { user_id, balance } = req.body;
+
+        if (balance <= 0) {
+            return res.status(400).json({ message: 'Withdraw balance must be greater than zero' });
+        }
+
+        const user = await User.findByPk(user_id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (user.balance < balance) {
+            return res.status(400).json({ message: 'Insufficient balance' });
+        }
+
+        user.balance -= balance;
+        await user.save();
+
+        const transaction = await Transaction.create({
+            from_user_id: user_id,
+            to_user_id: null,
+            amount: balance,
+            transaction_type: 'withdraw',
+            status: 'completed'
+        });
+
+        res.status(200).json({ message: `Withdrawal of ${balance} successful`, balance: user.balance, transaction });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

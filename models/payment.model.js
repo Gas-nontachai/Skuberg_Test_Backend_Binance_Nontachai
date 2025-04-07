@@ -9,14 +9,15 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: () => generateID("PAY")
         },
         from_user_id: DataTypes.STRING,
-        to_user_id: DataTypes.STRING,
-        amount: DataTypes.FLOAT,
-        payment_method: DataTypes.STRING
+        trade_id: DataTypes.STRING,
+        payment_status: {
+            type: DataTypes.ENUM('open', 'close'),
+            defaultValue: 'open',
+        },
     });
 
     Payment.associate = (models) => {
         Payment.belongsTo(models.User, { foreignKey: "from_user_id", as: "payer" });
-        Payment.belongsTo(models.User, { foreignKey: "to_user_id", as: "receiver" });
     };
 
     return Payment;

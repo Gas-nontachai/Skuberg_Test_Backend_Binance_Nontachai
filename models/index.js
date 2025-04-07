@@ -22,6 +22,7 @@ db.sequelize = sequelize;
 
 db.User = require('./user.model')(sequelize, Sequelize);
 db.Cryptocurrency = require('./cryptocurrency.model')(sequelize, Sequelize);
+db.Trade = require('./trade.model')(sequelize, Sequelize);
 db.Transaction = require('./transaction.model')(sequelize, Sequelize);
 db.Wallet = require('./wallet.model')(sequelize, Sequelize);
 db.Payment = require('./payment.model')(sequelize, Sequelize);
